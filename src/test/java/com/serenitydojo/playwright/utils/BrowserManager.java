@@ -7,6 +7,7 @@ import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Playwright;
 
 import java.nio.file.Paths;
+import java.util.Arrays;
 
 public class BrowserManager {
     private static String webBrowserType = "Chrome";
@@ -15,14 +16,21 @@ public class BrowserManager {
     private static Browser browser;
     private static Page page;
 
+//public Options getOptions() {
+//    return new Options().setLaunchOptions(new BrowserType.LaunchOptions()
+//            .setHeadless(false)
+//            );
+//}
 
-
-    private BrowserManager() {
+    public BrowserManager() {
         environment = Playwright.create();
 
         switch (webBrowserType.toUpperCase()){
             case "CHROME":
-                browser = environment.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false));
+                browser = environment.chromium().launch(new BrowserType.LaunchOptions()
+                        .setHeadless(false)
+                        .setArgs(Arrays.asList("--no-sandbox", "--disable-extensions", "--disable-gpu"))
+                );
                 page = browser.newPage();
                 break;
             case "FIREFOX":
@@ -33,7 +41,10 @@ public class BrowserManager {
 
                 browser = environment.chromium().launch(new BrowserType.LaunchOptions()
                         .setHeadless(false)
-                        .setExecutablePath(Paths.get("C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe")));
+                        .setArgs(Arrays.asList("--no-sandbox","--disable-extensions","--disable-gpu"))
+                        .setExecutablePath(Paths.get("C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe"))
+                );
+
                 page = browser.newPage();
                 break;
             default:
