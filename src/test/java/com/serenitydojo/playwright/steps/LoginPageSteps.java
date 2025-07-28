@@ -3,6 +3,7 @@ import com.microsoft.playwright.assertions.PlaywrightAssertions;
 import com.microsoft.playwright.options.AriaRole;
 import com.microsoft.playwright.options.WaitUntilState;
 import com.serenitydojo.playwright.utils.AdminUser;
+import io.cucumber.java.BeforeAll;
 import io.cucumber.java.en.*;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.LoadState;
@@ -21,9 +22,15 @@ import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertTha
 
 public class LoginPageSteps {
     LoginPage loginPage = new LoginPage();
+    AdminUser adminUser = new AdminUser();
 
-@BeforeEach
-public void initPage () {
+
+
+@BeforeAll
+public static void initPage () {
+    LoginPage loginPage = new LoginPage();
+    AdminUser adminUser = new AdminUser();
+    adminUser.loadCredentials();
     loginPage = new LoginPage();
 }
 
