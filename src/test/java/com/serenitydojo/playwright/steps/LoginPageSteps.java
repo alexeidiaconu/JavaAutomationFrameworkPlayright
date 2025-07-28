@@ -12,6 +12,8 @@ import com.serenitydojo.playwright.ui.blocks.SideMenu;
 import io.cucumber.java.en.Given;
 import org.junit.jupiter.api.*;
 
+import java.util.Map;
+
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
 
@@ -61,12 +63,12 @@ public void initPage () {
 
     }
 
-    @And("Invalid credentials are populated in the username and password fields")
-    public void invalidCredentialsArePopulatedInTheUsernameAndPasswordFields() {
+    @And("Invalid credentials are populated in the username and password fields:")
+    public void invalidCredentialsArePopulatedInTheUsernameAndPasswordFields(Map<String,String> userCredentials) {
 
         loginPage.getCurrentPage().waitForLoadState(LoadState.NETWORKIDLE);
-        loginPage.getUsernameField().fill("alexalexxx");
-        loginPage.getPasswordField().fill("Apss1234");
+        loginPage.getUsernameField().fill(userCredentials.get("userName"));
+        loginPage.getPasswordField().fill(userCredentials.get("password"));
     }
 
     @And("An Alert message {string} is displayed on the Login page")
