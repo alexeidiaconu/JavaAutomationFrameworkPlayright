@@ -1,8 +1,10 @@
-package com.serenitydojo.playwright.ui;
+package com.serenitydojo.playwright.ui.pages;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
-import com.serenitydojo.playwright.ui.pages.GenericPage;
+import com.microsoft.playwright.options.LoadState;
+import com.microsoft.playwright.options.WaitUntilState;
+import com.serenitydojo.playwright.utils.AdminUser;
 
 public class LoginPage extends GenericPage {
 
@@ -30,4 +32,15 @@ public class LoginPage extends GenericPage {
     public Locator getLoginButton() {
         return loginButton;
     }
+
+    public void login() {
+
+        this.getCurrentPage().navigate("http://172.23.176.163:8200/web/index.php/auth/login" , new Page.NavigateOptions().setWaitUntil(WaitUntilState.NETWORKIDLE));
+
+        this.getCurrentPage().waitForLoadState(LoadState.NETWORKIDLE);
+        this.usernameField.fill(AdminUser.USERNAME);
+        this.passwordField.fill(AdminUser.PASSWORD);
+        this.loginButton.click();
+    }
+
 }

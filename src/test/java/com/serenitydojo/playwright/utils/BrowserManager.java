@@ -29,7 +29,7 @@ public class BrowserManager {
             case "CHROME":
                 browser = environment.chromium().launch(new BrowserType.LaunchOptions()
                         .setHeadless(false)
-                        .setArgs(Arrays.asList("--no-sandbox", "--disable-extensions", "--disable-gpu"))
+//                        .setArgs(Arrays.asList("--no-sandbox", "--disable-extensions", "--disable-gpu"))
                 );
                 page = browser.newPage();
                 break;
@@ -65,10 +65,20 @@ public class BrowserManager {
         return BrowserManager.page;
     }
 
+    public static Browser getWebBrowser() {
+        return browser;
+    }
+
+    public static void setPage(Page page) {
+        BrowserManager.page = page;
+    }
+
     public static void tearDown() {
         BrowserManager browserManager = BrowserManager.getInstance();
-        browser.close();
-        environment.close();
+        if (browser != null) {browser.close();}
+        if (environment != null) {environment.close();}
+        instance = null;
+        page = null;
     }
 
 }
