@@ -9,7 +9,6 @@ import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.LoadState;
 import com.microsoft.playwright.options.WaitForSelectorState;
 import com.serenitydojo.playwright.ui.pages.LoginPage;
-import com.serenitydojo.playwright.ui.blocks.SideMenu;
 import io.cucumber.java.en.Given;
 import org.junit.jupiter.api.*;
 
@@ -28,10 +27,9 @@ public class LoginPageSteps {
 
 @BeforeAll
 public static void initPage () {
-    LoginPage loginPage = new LoginPage();
-    AdminUser adminUser = new AdminUser();
-    adminUser.loadCredentials();
-    loginPage = new LoginPage();
+
+
+
 }
 
 @AfterEach
@@ -48,9 +46,10 @@ public static void initPage () {
 
     @And("valid credentials are populated in the username and password fields")
     public void validCredentialsArePopulatedInTheUsernameAndPasswordFields() {
+        adminUser.loadCredentials();
         loginPage.getCurrentPage().waitForLoadState(LoadState.NETWORKIDLE);
-        loginPage.getUsernameField().fill(AdminUser.USERNAME);
-        loginPage.getPasswordField().fill(AdminUser.PASSWORD);
+        loginPage.getUsernameField().fill(adminUser.USERNAME);
+        loginPage.getPasswordField().fill(adminUser.PASSWORD);
     }
 
     @When("the Submit button is clicked")
@@ -59,11 +58,10 @@ public static void initPage () {
     }
 
 
-    @Then("the application Dasboard page is displayed")
-    public void theApplicationDasboardPageIsDisplayed() {
+    @Then("the application Dashboard page is displayed")
+    public void theApplicationDashboardPageIsDisplayed() {
         loginPage.getCurrentPage().waitForSelector("//h6[normalize-space()='Dashboard']", new Page.WaitForSelectorOptions()
                         .setState(WaitForSelectorState.VISIBLE)
-//                .setTimeout(3000)
         );
         Assertions.assertTrue(loginPage.getCurrentPage().locator("//h6[normalize-space()='Dashboard']").isVisible());
         loginPage.closePage();
@@ -89,6 +87,7 @@ public static void initPage () {
     public void theLoginPageIsDisplayed() {
         loginPage.getCurrentPage().waitForLoadState(LoadState.NETWORKIDLE);
         PlaywrightAssertions.assertThat(loginPage.getCurrentPage().getByRole(AriaRole.HEADING)).isVisible();
+        PlaywrightAssertions.assertThat(loginPage.getCurrentPage().getByRole(AriaRole.HEADING)).hasText("Login");
 
     }
 }

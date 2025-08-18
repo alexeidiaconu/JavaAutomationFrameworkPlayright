@@ -33,13 +33,13 @@ public class LoginPage extends GenericPage {
         return loginButton;
     }
 
-    public void login() {
+    public void login(AdminUser adminUser) {
 
         this.getCurrentPage().navigate("http://172.23.176.163:8200/web/index.php/auth/login" , new Page.NavigateOptions().setWaitUntil(WaitUntilState.NETWORKIDLE));
 
         this.getCurrentPage().waitForLoadState(LoadState.NETWORKIDLE);
-        this.usernameField.fill(AdminUser.USERNAME);
-        this.passwordField.fill(AdminUser.PASSWORD);
+        this.usernameField.fill(adminUser.USERNAME);
+        this.passwordField.fill(adminUser.PASSWORD);
         this.loginButton.click();
     }
 
