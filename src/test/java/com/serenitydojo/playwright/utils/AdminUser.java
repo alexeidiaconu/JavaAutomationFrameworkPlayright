@@ -1,6 +1,13 @@
 package com.serenitydojo.playwright.utils;
 
 public class AdminUser {
-    public static final String USERNAME = "Alexei";
-    public static final String PASSWORD = "AlexPassw0rd!";
+    public  String USERNAME;
+    public  String PASSWORD;
+
+
+    public void loadCredentials() {
+
+            this.USERNAME = ConfigReaderManager.getProperty("username");
+            this.PASSWORD = ConfigReaderManager.getProperty("password");
+    }
 }
