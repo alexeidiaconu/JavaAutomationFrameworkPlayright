@@ -1,6 +1,8 @@
 package com.serenitydojo.playwright.ui.blocks;
 
 import com.microsoft.playwright.Locator;
+import com.microsoft.playwright.Page;
+import com.microsoft.playwright.options.AriaRole;
 import com.serenitydojo.playwright.ui.pages.GenericPage;
 
 public class SideMenu extends GenericPage {
@@ -21,12 +23,12 @@ public class SideMenu extends GenericPage {
     public SideMenu() {
         this.menuItemAdmin = super.getCurrentPage().locator("//span[normalize-space()='Admin']");
         this.menuItemPIM = super.getCurrentPage().locator("//span[normalize-space()='PIM']");
-        this.menuItemLeave = super.getCurrentPage().locator("//span[normalize-space()='Leave']");
+        this.menuItemLeave = super.getCurrentPage().getByRole(AriaRole.LINK, new Page.GetByRoleOptions().setName("Leave"));
         this.menuItemTime = super.getCurrentPage().locator("//span[normalize-space()='Time']");
         this.menuItemRecruitment = super.getCurrentPage().locator("//span[normalize-space()='Recruitment']");
         this.menuItemMyInfo = super.getCurrentPage().locator("//span[normalize-space()='My Info']");
         this.menuItemPerformance = super.getCurrentPage().locator("//span[normalize-space()='Performance']");
-        this.menuItemDashboard = super.getCurrentPage().locator("//span[normalize-space()='Dashboard']");
+        this.menuItemDashboard = super.getCurrentPage().getByRole(AriaRole.LINK, new Page.GetByRoleOptions().setName("Dashboard"));
         this.menuItemDirectory = super.getCurrentPage().locator("//span[normalize-space()='Directory']");
         this.menuItemMaintenance = super.getCurrentPage().locator("//span[normalize-space()='Maintenance']");
         this.menuItemClaim = super.getCurrentPage().locator("//span[normalize-space()='Claim']");
@@ -79,5 +81,40 @@ public class SideMenu extends GenericPage {
 
     public Locator getMenuItemBuzz() {
         return menuItemBuzz;
+    }
+
+    public void clickOnSideMenuItem(String menuItemText) {
+        switch (menuItemText.trim()) {
+            case "Admin":
+                getMenuItemAdmin().click();
+                break;
+            case "PIM":
+                getMenuItemPIM().click();
+                break;
+            case "Leave":
+                getMenuItemLeave().click();
+                break;
+            case "Time":
+                getMenuItemTime().click();
+                break;
+            case "Recruitment":
+                getMenuItemRecruitment().click();
+                break;
+            case "My Info":
+                getMenuItemMyInfo().click();
+                break;
+            case "Performance":
+                getMenuItemPerformance().click();
+                break;
+            case "Dashboard":
+                getMenuItemDashboard().click();
+                break;
+            case "Claim":
+                getMenuItemClaim().click();
+                break;
+            case "Buzz":
+                getMenuItemBuzz().click();
+                break;
+        }
     }
 }

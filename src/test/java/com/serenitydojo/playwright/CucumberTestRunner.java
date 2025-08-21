@@ -8,7 +8,7 @@ import org.junit.runner.RunWith;
 @CucumberOptions(
         features = "src/test/java/com/serenitydojo/playwright/resources/features",
         glue = {"com.serenitydojo.playwright.steps"},
-        tags = "@Login",
+        tags = "@Smoke",
         plugin = {"pretty", "html:target/cucumber-reports"}
 )
 

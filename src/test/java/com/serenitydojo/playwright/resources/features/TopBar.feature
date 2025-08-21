@@ -1,17 +1,20 @@
 Feature: User Dropdown Flow
 
-  Scenario Outline: Verify User Dropdown Actions
-    Given The top bar is displayed
+  Background: User logged in successfully
+  Given Admin User is logged in with valid credentials
+  @Smoke
+  Scenario Outline: Verify User Dropdown Menu Actions
+    Given the top bar is visible
     When the top bar user dropdown is clicked
-    And " <option> " option is selected from the dropdown menu
-    Then an "<action> " is taking place
+    And the " <option> " option is selected from the dropdown menu
+    Then the corresponding "<page title> " is displayed on the opened page
 
     Examples:
-      | option          | action                           |
-      | About           | theAboutPageIsDisplayed          |
-      | Support         | theSupportPageIsDisplayed        |
-      | Change Password | thePasswordChangePageIsDisplayed |
-      | Logout          | Logout                           |
+      | option          | page title                     |
+      | About           | About                          |
+      | Support         | Getting Started with OrangeHRM |
+      | Change Password | Update Password                |
+      | Logout          | Login                          |
 
 
 

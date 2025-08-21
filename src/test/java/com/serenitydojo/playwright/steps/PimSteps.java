@@ -7,6 +7,7 @@ import com.microsoft.playwright.options.AriaRole;
 import com.microsoft.playwright.options.LoadState;
 import com.microsoft.playwright.options.WaitForSelectorState;
 import com.serenitydojo.playwright.ui.blocks.SideMenu;
+import com.serenitydojo.playwright.utils.WebElementActions;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -38,9 +39,9 @@ public class PimSteps {
 
     @When("the Add button is pressed")
     public void theAddButtonIsPressed() {
-       Locator addButton =  sideMenu.getCurrentPage().locator("//button[normalize-space()='Add']");
-       addButton.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
-       addButton.click();
+       Locator addButton = sideMenu.getCurrentPage().getByRole(AriaRole.BUTTON).getByText("Add");
+        //Locator addButton =  sideMenu.getCurrentPage().locator("//button[normalize-space()='Add']");
+        WebElementActions.clickOnButton(addButton);
     }
 
     @And("The Add Employee form is displayed")

@@ -1,22 +1,14 @@
 package com.serenitydojo.playwright.steps;
 import com.microsoft.playwright.assertions.PlaywrightAssertions;
 import com.microsoft.playwright.options.AriaRole;
-import com.microsoft.playwright.options.WaitUntilState;
 import com.serenitydojo.playwright.utils.AdminUser;
-import io.cucumber.java.BeforeAll;
+import com.serenitydojo.playwright.utils.WebElementActions;
 import io.cucumber.java.en.*;
-import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.LoadState;
-import com.microsoft.playwright.options.WaitForSelectorState;
 import com.serenitydojo.playwright.ui.pages.LoginPage;
 import io.cucumber.java.en.Given;
 import org.junit.jupiter.api.*;
-
 import java.util.Map;
-
-import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
-
-
 
 
 public class LoginPageSteps {
@@ -25,13 +17,6 @@ public class LoginPageSteps {
 
 
 
-@BeforeAll
-public static void initPage () {
-
-
-
-}
-
 @AfterEach
     public void closePage () {
         loginPage.closePage();
@@ -39,8 +24,8 @@ public static void initPage () {
 
     @Given("The Login Page is accessed$")
     public void theLoginPageIsAccessed() {
-        loginPage.getCurrentPage().navigate("http://172.23.176.163:8200/web/index.php/auth/login" , new Page.NavigateOptions().setWaitUntil(WaitUntilState.NETWORKIDLE));
-        PlaywrightAssertions.assertThat(loginPage.getCurrentPage().getByRole(AriaRole.HEADING)).isVisible();
+        loginPage.navigateToLoginPageURL();
+        PlaywrightAssertions.assertThat(loginPage.getLoginTitle()).isVisible();
 
     }
 
@@ -48,32 +33,22 @@ public static void initPage () {
     public void validCredentialsArePopulatedInTheUsernameAndPasswordFields() {
         adminUser.loadCredentials();
         loginPage.getCurrentPage().waitForLoadState(LoadState.NETWORKIDLE);
-        loginPage.getUsernameField().fill(adminUser.USERNAME);
-        loginPage.getPasswordField().fill(adminUser.PASSWORD);
+        WebElementActions.populateField(loginPage.getUsernameField(), adminUser.USERNAME);
+        WebElementActions.populateField(loginPage.getPasswordField(), adminUser.PASSWORD);
     }
 
     @When("the Submit button is clicked")
     public void theSubmitButtonIsClicked() {
-        loginPage.getLoginButton().click();
+        WebElementActions.clickOnButton(loginPage.getLoginButton());
     }
 
-
-    @Then("the application Dashboard page is displayed")
-    public void theApplicationDashboardPageIsDisplayed() {
-        loginPage.getCurrentPage().waitForSelector("//h6[normalize-space()='Dashboard']", new Page.WaitForSelectorOptions()
-                        .setState(WaitForSelectorState.VISIBLE)
-        );
-        Assertions.assertTrue(loginPage.getCurrentPage().locator("//h6[normalize-space()='Dashboard']").isVisible());
-        loginPage.closePage();
-
-    }
 
     @And("Invalid credentials are populated in the username and password fields:")
     public void invalidCredentialsArePopulatedInTheUsernameAndPasswordFields(Map<String,String> userCredentials) {
 
         loginPage.getCurrentPage().waitForLoadState(LoadState.NETWORKIDLE);
-        loginPage.getUsernameField().fill(userCredentials.get("userName"));
-        loginPage.getPasswordField().fill(userCredentials.get("password"));
+        WebElementActions.populateField(loginPage.getUsernameField(),userCredentials.get("userName"));
+        WebElementActions.populateField(loginPage.getPasswordField(),userCredentials.get("password"));
     }
 
     @And("An Alert message {string} is displayed on the Login page")
@@ -86,8 +61,8 @@ public static void initPage () {
     @Then("The Login Page is displayed")
     public void theLoginPageIsDisplayed() {
         loginPage.getCurrentPage().waitForLoadState(LoadState.NETWORKIDLE);
-        PlaywrightAssertions.assertThat(loginPage.getCurrentPage().getByRole(AriaRole.HEADING)).isVisible();
-        PlaywrightAssertions.assertThat(loginPage.getCurrentPage().getByRole(AriaRole.HEADING)).hasText("Login");
+        PlaywrightAssertions.assertThat(loginPage.getLoginTitle()).isVisible();
+//        PlaywrightAssertions.assertThat(loginPage.getCurrentPage().getByRole(AriaRole.HEADING)).hasText("Login");
 
     }
 }
@@ -95,7 +70,15 @@ public static void initPage () {
 
 
 
-
+//    @Then("the application Dashboard page is displayed")
+//    public void theApplicationDashboardPageIsDisplayed() {
+//        loginPage.getCurrentPage().waitForSelector("//h6[normalize-space()='Dashboard']", new Page.WaitForSelectorOptions()
+//                        .setState(WaitForSelectorState.VISIBLE)
+//        );
+//        Assertions.assertTrue(loginPage.getCurrentPage().locator("//h6[normalize-space()='Dashboard']").isVisible());
+//        loginPage.closePage();
+//
+//    }
 //    LoginPage loginPage = new LoginPage();
 //@AfterEach
 //public void closePage() {
