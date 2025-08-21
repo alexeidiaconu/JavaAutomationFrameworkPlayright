@@ -6,12 +6,21 @@ import com.serenitydojo.playwright.ui.pages.LoginPage;
 import com.serenitydojo.playwright.utils.AdminUser;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
+import org.junit.jupiter.api.AfterEach;
+
+
 
 public class GenericSteps {
     LoginPage loginPage = new LoginPage();;
     AdminUser adminUser = new AdminUser();
     SideMenu sideMenu = new SideMenu();
 
+    @AfterEach
+    public void afterEach() {
+
+        sideMenu.closePage();
+
+    }
 
 
     @Given("Admin User is logged in with valid credentials")
@@ -22,21 +31,7 @@ public class GenericSteps {
 
     @And("The {} menu item is clicked")
     public void theMenuItemIsClicked(String menuItem) {
-
-        String trimmedMenuItem = menuItem.trim();
-
-        switch (trimmedMenuItem) {
-
-            case "Admin":
-                sideMenu.getMenuItemAdmin().click();
-                break;
-
-            case "PIM":
-                sideMenu.getMenuItemPIM().click();
-                break;
-
-        }
-
+        sideMenu.clickOnSideMenuItem(menuItem);
     }
 
     @And("the {} page is displayed")

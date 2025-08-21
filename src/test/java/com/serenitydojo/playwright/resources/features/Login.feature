@@ -4,7 +4,7 @@ Feature: Login Flow
     Given The Login Page is accessed
     And valid credentials are populated in the username and password fields
     When the Submit button is clicked
-    Then the application Dashboard page is displayed
+    Then the Dashboard page is displayed
 
 @Login
   Scenario Outline: Admin User Login with invalid credentials

@@ -1,4 +1,5 @@
 Feature: Employee Flow
+  Background:
   Scenario Outline: Add new employee
     Given Admin User is logged in with valid credentials
     And The side menu is visible
