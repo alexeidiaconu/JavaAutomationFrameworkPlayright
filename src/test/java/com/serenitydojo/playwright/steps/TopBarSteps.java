@@ -2,27 +2,28 @@ package com.serenitydojo.playwright.steps;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.assertions.PlaywrightAssertions;
 import com.microsoft.playwright.options.LoadState;
+import com.serenitydojo.playwright.resources.Constants;
+import com.serenitydojo.playwright.ui.blocks.SideMenu;
 import com.serenitydojo.playwright.ui.blocks.TopBar;
 import com.serenitydojo.playwright.ui.pages.LoginPage;
+import com.serenitydojo.playwright.utils.AdminUser;
+import com.serenitydojo.playwright.utils.ScenarioContext;
 import com.serenitydojo.playwright.utils.WebElementActions;
-import io.cucumber.java.After;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.AfterEach;
+
+import static com.serenitydojo.playwright.utils.ContextKeys.*;
 
 
 public class TopBarSteps {
-    TopBar topBar;
-    LoginPage loginPage = new LoginPage();
-
-    @After
-    public void after() {
-        loginPage.closePage();
-    }
-
+    ScenarioContext scenarioContext = ScenarioContext.getInstance();
+//    LoginPage loginPage = (LoginPage) scenarioContext.getScenarioContext(LOGIN_PAGE);
+//    AdminUser adminUser = (AdminUser) scenarioContext.getScenarioContext(ADMIN_USER);
+//    SideMenu sideMenu = (SideMenu) scenarioContext.getScenarioContext(SIDE_MENU);
+    TopBar topBar = (TopBar) scenarioContext.getScenarioContext(TOP_BAR);
 
 
     @Given("the top bar is visible")
@@ -30,12 +31,12 @@ public class TopBarSteps {
 
         topBar = new TopBar();
         Page currentPage = topBar.getCurrentPage();
-        WebElementActions.waitForWebElementToBeVisible(topBar.getProfilePicture());
+        WebElementActions.waitForWebElementToBeVisible(topBar.getProfilePicture(), Constants.WAIT_TIMEOUT);
         currentPage.waitForLoadState(LoadState.NETWORKIDLE);
         String currentUrl = currentPage.url();
-        Assertions.assertThat(currentUrl.contains("index.php"));
+        Assertions.assertThat(currentUrl.contains("index.php")).isTrue();
         PlaywrightAssertions.assertThat(topBar.getProfilePicture()).isVisible();
-        Assertions.assertThat(topBar.getTopbarTitleText().contains("Dashboard"));
+        Assertions.assertThat(topBar.getTopbarTitleText().contains("Dashboard")).isTrue();
 
     }
 
@@ -43,7 +44,7 @@ public class TopBarSteps {
     public void theTopBarUserDropdownIsClicked() {
 
         WebElementActions.clickOnMenuItem(topBar.getUserDropdown());
-        WebElementActions.waitForWebElementToBeVisible(topBar.getUserDropdownTab());
+        WebElementActions.waitForWebElementToBeVisible(topBar.getUserDropdownTab(),Constants.WAIT_TIMEOUT);
         PlaywrightAssertions.assertThat(topBar.getUserDropdownTab()).isVisible();
     }
 

@@ -19,6 +19,7 @@ public class SideMenu extends GenericPage {
     private final Locator menuItemMaintenance;
     private final Locator menuItemClaim;
     private final Locator menuItemBuzz;
+    private final Locator menuSidepanel;
 
     public SideMenu() {
         this.menuItemAdmin = super.getCurrentPage().locator("//span[normalize-space()='Admin']");
@@ -33,6 +34,7 @@ public class SideMenu extends GenericPage {
         this.menuItemMaintenance = super.getCurrentPage().locator("//span[normalize-space()='Maintenance']");
         this.menuItemClaim = super.getCurrentPage().locator("//span[normalize-space()='Claim']");
         this.menuItemBuzz = super.getCurrentPage().locator("//span[normalize-space()='Buzz']");
+        this.menuSidepanel = super.getCurrentPage().getByRole(AriaRole.NAVIGATION, new Page.GetByRoleOptions().setName("Sidepanel"));
     }
 
     public Locator getMenuItemAdmin() {
@@ -83,6 +85,10 @@ public class SideMenu extends GenericPage {
         return menuItemBuzz;
     }
 
+    public Locator getMenuSidepanel() {
+        return menuSidepanel;
+    }
+
     public void clickOnSideMenuItem(String menuItemText) {
         switch (menuItemText.trim()) {
             case "Admin":
@@ -108,6 +114,9 @@ public class SideMenu extends GenericPage {
                 break;
             case "Dashboard":
                 getMenuItemDashboard().click();
+                break;
+            case "Directory":
+                getMenuItemDirectory().click();
                 break;
             case "Claim":
                 getMenuItemClaim().click();

@@ -10,14 +10,8 @@ public class ConfigReaderManager {
 
     public static void initPropreties() {
 
-        FileInputStream propertiesFile = null;
-        try {
-            propertiesFile = new FileInputStream(CONFIG_FILE_PATH);
+        try (FileInputStream propertiesFile = new FileInputStream(CONFIG_FILE_PATH)) {
             properties = new Properties();
-
-            //input = AdminUser.class.getClassLoader().getResourceAsStream("credentials.properties");
-
-            // Load the properties file from the classpath
 
             if (propertiesFile == null) {
                 System.out.println("Sorry, unable to find " + CONFIG_FILE_PATH);
@@ -26,15 +20,6 @@ public class ConfigReaderManager {
             properties.load(propertiesFile);
         } catch (IOException e) {
            e.printStackTrace();
-        } finally {
-            if (propertiesFile != null) {
-                try {
-                    propertiesFile.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
         }
     }
 
@@ -47,3 +32,4 @@ public class ConfigReaderManager {
 
     }
 }
+//try with resources

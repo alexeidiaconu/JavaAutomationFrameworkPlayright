@@ -1,13 +1,17 @@
 package com.serenitydojo.playwright.ui.pages;
 
-import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import com.microsoft.playwright.TimeoutError;
+import com.microsoft.playwright.options.LoadState;
+import com.serenitydojo.playwright.resources.Constants;
 import com.serenitydojo.playwright.utils.BrowserManager;
 import com.serenitydojo.playwright.utils.WebElementActions;
 
+import static com.serenitydojo.playwright.resources.Constants.WAIT_TIMEOUT;
+
 public abstract class GenericPage {
     private Page currentPage;
-    public WebElementActions webElementActions;
+   // public WebElementActions webElementActions;
 
     public GenericPage() {
         BrowserManager.getInstance();
@@ -26,6 +30,15 @@ public abstract class GenericPage {
         this.currentPage = currentPage;
     }
 
+    public void waitForPageToBeVisible(Constants timeoutMillis) {
+
+       try {
+           currentPage.waitForLoadState(LoadState.NETWORKIDLE, new Page.WaitForLoadStateOptions().setTimeout(WAIT_TIMEOUT.getValue()));
+       } catch (TimeoutError e) {
+           System.err.println("Element was not visible within " + timeoutMillis + " ms. Locator: " + currentPage);
+       }
+    }
+
     /*Actions*/
 
 //    public void populateField(Locator fieldToPopulate, String dataToBePopulated) {
@@ -36,3 +49,4 @@ public abstract class GenericPage {
 
 //refresh
 //isonpage
+//wait for page to be visible
