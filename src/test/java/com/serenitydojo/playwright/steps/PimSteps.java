@@ -4,76 +4,124 @@ import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.assertions.PlaywrightAssertions;
 import com.microsoft.playwright.options.AriaRole;
-import com.microsoft.playwright.options.LoadState;
 import com.microsoft.playwright.options.WaitForSelectorState;
+import com.serenitydojo.playwright.resources.Constants;
 import com.serenitydojo.playwright.ui.blocks.SideMenu;
+import com.serenitydojo.playwright.ui.pages.AddEmployeePage;
+import com.serenitydojo.playwright.ui.pages.PimPage;
+import com.serenitydojo.playwright.utils.ScenarioContext;
 import com.serenitydojo.playwright.utils.WebElementActions;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.junit.jupiter.api.Assertions;
+
+import static com.serenitydojo.playwright.resources.ApiUrls.DELETE_EMPLOYEE;
+import static com.serenitydojo.playwright.resources.Constants.WAIT_TIMEOUT;
+import static com.serenitydojo.playwright.utils.ContextKeys.SIDE_MENU;
 
 public class PimSteps {
-    SideMenu sideMenu = new SideMenu();
+    ScenarioContext scenarioContext = ScenarioContext.getInstance();
+    SideMenu sideMenu = (SideMenu) scenarioContext.getScenarioContext(SIDE_MENU);
+    PimPage pimPage = new PimPage();
+    AddEmployeePage addEmployeePage = new AddEmployeePage();
+
+//    @After
+//    public void after() {
+//        pimPage.closePage();
+//    }
 
     @And("The side menu is visible")
     public void theSideMenuIsVisible() {
-        sideMenu.getCurrentPage().waitForLoadState(LoadState.NETWORKIDLE);
-        PlaywrightAssertions.assertThat(sideMenu.getCurrentPage().getByRole(AriaRole.NAVIGATION, new Page.GetByRoleOptions().setName("Sidepanel") )).isVisible();
+        sideMenu.waitForPageToBeVisible(WAIT_TIMEOUT);
+        PlaywrightAssertions.assertThat(sideMenu.getCurrentPage().getByRole(AriaRole.NAVIGATION, new Page.GetByRoleOptions().setName("Sidepanel") )).isVisible(); //???
     }
 
     @When("the Employee List tab option is clicked")
     public void theEmployeeListTabOptionIsClicked() {
-        Locator employeeListItem = sideMenu.getCurrentPage().locator("li[class='oxd-topbar-body-nav-tab --visited'] a[class='oxd-topbar-body-nav-tab-item']");
-        employeeListItem.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
 
-        employeeListItem.click();
+        if (WebElementActions.waitForWebElementToBeVisible(pimPage.getMenuItemEmployeeList(),Constants.WAIT_TIMEOUT)) {
+            WebElementActions.clickOnButton(pimPage.getMenuItemEmployeeList());
+        }
+
+
     }
 
     @Then("The list of all the employees is displayed")
     public void theListOfAllTheEmployeesIsDisplayed() {
-        PlaywrightAssertions.assertThat(sideMenu.getCurrentPage().locator("div[role='table']")).isVisible();
-
-        sideMenu.closePage();
+        Assertions.assertTrue(WebElementActions.waitForWebElementToBeVisible(pimPage.getListOfEmployees(), WAIT_TIMEOUT));
 
     }
 
     @When("the Add button is pressed")
     public void theAddButtonIsPressed() {
-       Locator addButton = sideMenu.getCurrentPage().getByRole(AriaRole.BUTTON).getByText("Add");
-        //Locator addButton =  sideMenu.getCurrentPage().locator("//button[normalize-space()='Add']");
-        WebElementActions.clickOnButton(addButton);
+        WebElementActions.clickOnButton(pimPage.getButtonAddEmployee());
     }
 
     @And("The Add Employee form is displayed")
     public void theAddEmployeeFormIsDisplayed() {
-        PlaywrightAssertions.assertThat(sideMenu.getCurrentPage().getByRole(AriaRole.HEADING, new Page.GetByRoleOptions().setName("Add Employee"))).isVisible();
+        Assertions.assertTrue(WebElementActions.waitForWebElementToBeVisible(addEmployeePage.getTitleAddEmployee(),WAIT_TIMEOUT));
     }
 
     @And("The form is populated with valid {} and {} and {}  values")
-    public void theFormIsPopulatedWithValidAndAndValues(String firstName, String lastName, String empId) {
+    public void theFormIsPopulatedWithValidAndAndValues(String firstName, String lastName, String employeeId) {
 
-        Locator firstNameField = sideMenu.getCurrentPage().getByPlaceholder("First Name");
-        Locator lastNameField = sideMenu.getCurrentPage().getByPlaceholder("Last Name");
-        Locator empIdField = sideMenu.getCurrentPage().locator("(//input[@class='oxd-input oxd-input--active'])[2]");
-
-        firstNameField.fill(firstName);
-        lastNameField.fill(lastName);
-        empIdField.fill(empId.trim());
+        WebElementActions.populateField(addEmployeePage.getFirstNameField(),firstName);
+        WebElementActions.populateField(addEmployeePage.getLastNameField(),lastName);
+        WebElementActions.populateField(addEmployeePage.getEmployeeIdField(),employeeId.trim());
     }
 
     @And("The Save button is pressed")
     public void theSaveButtonIsPressed() {
-        sideMenu.getCurrentPage().getByRole(AriaRole.BUTTON).getByText("Save").click();
+        WebElementActions.clickOnButton(addEmployeePage.getButtonSave());
     }
 
     @Then("user is redirected to Personal Details page")
     public void userIsRedirectedToPersonalDetailsPage() {
 
-        Locator personalDetailsTitle = sideMenu.getCurrentPage().locator("//h6[normalize-space()='Personal Details']");
+        Locator personalDetailsTitle = WebElementActions.locateHeadingByText(pimPage.getCurrentPage(),"Personal Details");
 
-        personalDetailsTitle.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
+        if (personalDetailsTitle != null) {
+            WebElementActions.waitForWebElementToBeVisible(personalDetailsTitle,WAIT_TIMEOUT);
+        }
 
         PlaywrightAssertions.assertThat(personalDetailsTitle).isVisible();
-        sideMenu.closePage();
+    }
+
+    @When("the Employee to delete is selected from Employee list by {} and {} and {}  values")
+    public void theEmployeeToDeleteIsSelectedFromEmployeeListByAndAndValues(String employeeFirstname, String employeeLastname, String employeeId) {
+        pimPage.setEmployeeCard(employeeFirstname,employeeLastname,employeeId);
+
+    }
+
+    @And("The Delete button is pressed")
+    public void theDeleteButtonIsPressed() {
+
+        pimPage.getEmployeeCard().getEmployeeCardRow().scrollIntoViewIfNeeded();
+        WebElementActions.waitForWebElementToBeVisible( pimPage.getEmployeeCard().getEmployeeCardRow(),WAIT_TIMEOUT);
+        Locator trashButton = pimPage.getEmployeeCard().getButtonDeleteEmployee();
+        WebElementActions.clickOnButton(trashButton);
+    }
+
+
+    @And("the Employee with {} First Name  and {} Last Name and {} ID is not present in the Employee list.")
+    public void theEmployeeWithFirstNameAndLastNameAndIDIsNotPresentInTheEmployeeList(String employeeFirstname, String employeeLastname, String employeeId) {
+
+        pimPage.setEmployeeCard(employeeFirstname, employeeLastname, employeeId);
+        WebElementActions.waitForWebElementToBeVisible(pimPage.getListOfEmployees(),WAIT_TIMEOUT);
+        Assertions.assertFalse(pimPage.getEmployeeCard().getEmployeeCardRow().isVisible());
+    }
+
+    @And("The Yes,Delete button is pressed on the confirmation popup")
+    public void theYesDeleteButtonIsPressedOnTheConfirmationPopup() {
+        Locator yesDeleteButton  = pimPage.getCurrentPage().getByRole(AriaRole.BUTTON).getByText("Yes, Delete");
+        WebElementActions.waitForWebElementToBeVisible(yesDeleteButton,WAIT_TIMEOUT);
+
+
+        pimPage.getCurrentPage().waitForResponse(response -> response.url().contains(DELETE_EMPLOYEE.getUrl()) && response.status() == 200,
+                () -> {
+                    WebElementActions.clickOnButton(yesDeleteButton);
+                }
+        );
     }
 }

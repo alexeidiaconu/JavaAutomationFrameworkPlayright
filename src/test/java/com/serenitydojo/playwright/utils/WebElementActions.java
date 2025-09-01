@@ -2,8 +2,10 @@ package com.serenitydojo.playwright.utils;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import com.microsoft.playwright.TimeoutError;
 import com.microsoft.playwright.options.AriaRole;
 import com.microsoft.playwright.options.WaitForSelectorState;
+import com.serenitydojo.playwright.resources.Constants;
 
 public class WebElementActions {
 
@@ -19,9 +21,21 @@ public class WebElementActions {
         buttonToClick.click();
     }
 
-    public static void waitForWebElementToBeVisible(Locator webElement) {
-        webElement.waitFor(new Locator.WaitForOptions()
-                .setState(WaitForSelectorState.VISIBLE));
+    public static boolean waitForWebElementToBeVisible(Locator webElement, Constants timeoutMillis) {
+
+        try {
+            webElement.waitFor(new Locator.WaitForOptions()
+                    .setState(WaitForSelectorState.VISIBLE)
+                    .setTimeout(timeoutMillis.ordinal())
+            );
+            return true;
+        } catch (TimeoutError e) {
+            System.err.println("Element was not visible within " + timeoutMillis + " ms. Locator: " + webElement);
+            return false;
+        } catch (Exception e) {
+            System.err.println("Failed to wait for element visibility: " + e.getMessage());
+            return false;
+        }
     }
 
     public static void clickOnMenuItem(Locator itemToClick) {
@@ -30,9 +44,12 @@ public class WebElementActions {
 
     public static Locator locateHeadingByText(Page currentPage, String textToLocate) {
 
-        Locator titleToLocate = currentPage.getByRole(AriaRole.HEADING, new Page.GetByRoleOptions().setName(textToLocate));
-        if (titleToLocate != null) {
-           // WebElementActions.waitForWebElementToBeVisible(titleToLocate);
+        Locator titleToLocate = currentPage
+                .getByRole(AriaRole.HEADING, new Page.GetByRoleOptions()
+                .setName(textToLocate))
+                .first();
+
+          if (titleToLocate != null) {
             return titleToLocate;
         } else {
             return null;
@@ -43,7 +60,6 @@ public class WebElementActions {
     public static Locator locateParagraphByText(Page currentPage, String textToLocate) {
 
         Locator titleToLocate = currentPage.getByRole(AriaRole.PARAGRAPH, new Page.GetByRoleOptions().setName(textToLocate));
-        //WebElementActions.waitForWebElementToBeVisible(titleToLocate);
         if (titleToLocate != null) {
             return titleToLocate;
         } else {
@@ -56,7 +72,6 @@ public class WebElementActions {
 
         Locator titleToLocate = currentPage.getByText(textToLocate);
 
-        //WebElementActions.waitForWebElementToBeVisible(titleToLocate);
         if (titleToLocate.isVisible()) {
             return titleToLocate;
         } else {
