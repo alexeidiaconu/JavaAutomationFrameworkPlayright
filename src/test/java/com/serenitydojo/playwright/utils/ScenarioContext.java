@@ -1,5 +1,7 @@
 package com.serenitydojo.playwright.utils;
 
+import com.serenitydojo.playwright.utils.enums.ContextKeys;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,6 +26,7 @@ public class ScenarioContext {
     public Object getScenarioContext(ContextKeys key) {
         return scenarioContext.get(key.name());
     }
+
 
     public void setScenarioContext(ContextKeys key, Object value) {
         this.scenarioContext.put(key.name(), value);

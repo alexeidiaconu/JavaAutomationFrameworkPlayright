@@ -1,17 +1,15 @@
 package com.serenitydojo.playwright.steps;
 
-import com.serenitydojo.playwright.resources.Constants;
 import com.serenitydojo.playwright.ui.blocks.SideMenu;
 import com.serenitydojo.playwright.ui.blocks.TopBar;
 import com.serenitydojo.playwright.ui.pages.LoginPage;
-import com.serenitydojo.playwright.ui.pages.PimPage;
 import com.serenitydojo.playwright.utils.AdminUser;
 import com.serenitydojo.playwright.utils.ScenarioContext;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import org.assertj.core.api.Assertions;
-import static com.serenitydojo.playwright.utils.ContextKeys.*;
-import static com.serenitydojo.playwright.resources.Constants.WAIT_TIMEOUT;
+import static com.serenitydojo.playwright.utils.enums.ContextKeys.*;
+import static com.serenitydojo.playwright.utils.enums.Constants.WAIT_TIMEOUT;
 
 
 public class GenericSteps {

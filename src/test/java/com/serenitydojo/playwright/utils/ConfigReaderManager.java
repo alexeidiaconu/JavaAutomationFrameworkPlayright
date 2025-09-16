@@ -1,11 +1,12 @@
 package com.serenitydojo.playwright.utils;
 
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.util.Properties;
 import java.io.IOException;
 
 public class ConfigReaderManager {
-    private static final String CONFIG_FILE_PATH = "src/test/resources/credentials.properties";
+    private static final String CONFIG_FILE_PATH = "src/test/resources/properties/credentials.properties";
     private static Properties properties;
 
     public static void initPropreties() {
@@ -31,5 +32,22 @@ public class ConfigReaderManager {
         return properties.getProperty(propertyKey);
 
     }
-}
+
+    public static void setProperty(String propertyKey, String propertyValue) {
+
+        if (properties == null) {
+            initPropreties();
+        }
+
+        properties.setProperty(propertyKey,propertyValue);
+
+        // Persist the change back to the file
+        try (FileOutputStream fos = new FileOutputStream(CONFIG_FILE_PATH)) {
+            properties.store(fos, "Updated property " + propertyKey);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    }
 //try with resources

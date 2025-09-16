@@ -2,11 +2,8 @@ package com.serenitydojo.playwright.steps;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.assertions.PlaywrightAssertions;
 import com.microsoft.playwright.options.LoadState;
-import com.serenitydojo.playwright.resources.Constants;
-import com.serenitydojo.playwright.ui.blocks.SideMenu;
+import com.serenitydojo.playwright.utils.enums.Constants;
 import com.serenitydojo.playwright.ui.blocks.TopBar;
-import com.serenitydojo.playwright.ui.pages.LoginPage;
-import com.serenitydojo.playwright.utils.AdminUser;
 import com.serenitydojo.playwright.utils.ScenarioContext;
 import com.serenitydojo.playwright.utils.WebElementActions;
 import io.cucumber.java.en.And;
@@ -15,7 +12,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.assertj.core.api.Assertions;
 
-import static com.serenitydojo.playwright.utils.ContextKeys.*;
+import static com.serenitydojo.playwright.utils.enums.ContextKeys.*;
 
 
 public class TopBarSteps {
