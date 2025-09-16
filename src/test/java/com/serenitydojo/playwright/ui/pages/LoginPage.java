@@ -3,9 +3,8 @@ package com.serenitydojo.playwright.ui.pages;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
-import com.microsoft.playwright.options.LoadState;
 import com.microsoft.playwright.options.WaitUntilState;
-import com.serenitydojo.playwright.resources.Constants;
+import com.serenitydojo.playwright.utils.enums.Constants;
 import com.serenitydojo.playwright.utils.AdminUser;
 import com.serenitydojo.playwright.utils.ConfigReaderManager;
 

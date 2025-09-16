@@ -6,12 +6,14 @@ import org.junit.runner.RunWith;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(
-        features = "src/test/java/com/serenitydojo/playwright/resources/features",
+        features =  "classpath:features", //"src/test/resources/features/",
         glue = {"com.serenitydojo.playwright.steps","com.serenitydojo.playwright.hooks"},
-        tags = "@Employee",
+        tags = "@API",
         plugin = {"pretty", "html:target/cucumber-reports"}
 )
 
 public class CucumberTestRunner {
 
 }
+
+///"src/test/java/com/serenitydojo/playwright/resources/features",

@@ -1,7 +1,7 @@
 package com.serenitydojo.playwright.steps;
 
 import com.microsoft.playwright.assertions.PlaywrightAssertions;
-import com.serenitydojo.playwright.resources.Constants;
+import com.serenitydojo.playwright.utils.enums.Constants;
 import com.serenitydojo.playwright.ui.pages.LoginPage;
 import com.serenitydojo.playwright.utils.AdminUser;
 import com.serenitydojo.playwright.utils.ScenarioContext;
@@ -12,8 +12,8 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import java.util.Map;
 
-import static com.serenitydojo.playwright.utils.ContextKeys.ADMIN_USER;
-import static com.serenitydojo.playwright.utils.ContextKeys.LOGIN_PAGE;
+import static com.serenitydojo.playwright.utils.enums.ContextKeys.ADMIN_USER;
+import static com.serenitydojo.playwright.utils.enums.ContextKeys.LOGIN_PAGE;
 
 
 public class LoginPageSteps {

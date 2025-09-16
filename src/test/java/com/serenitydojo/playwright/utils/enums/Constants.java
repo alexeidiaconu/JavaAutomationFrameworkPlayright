@@ -1,4 +1,4 @@
-package com.serenitydojo.playwright.resources;
+package com.serenitydojo.playwright.utils.enums;
 
 public enum Constants {
 

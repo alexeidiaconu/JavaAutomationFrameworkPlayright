@@ -3,11 +3,12 @@ package com.serenitydojo.playwright.ui.pages;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.TimeoutError;
 import com.microsoft.playwright.options.LoadState;
-import com.serenitydojo.playwright.resources.Constants;
+import com.serenitydojo.playwright.utils.enums.Constants;
 import com.serenitydojo.playwright.utils.BrowserManager;
-import com.serenitydojo.playwright.utils.WebElementActions;
+//import org.apache.logging.log4j.LogManager;
+//import org.apache.logging.log4j.Logger;
 
-import static com.serenitydojo.playwright.resources.Constants.WAIT_TIMEOUT;
+import static com.serenitydojo.playwright.utils.enums.Constants.WAIT_TIMEOUT;
 
 public abstract class GenericPage {
     private Page currentPage;

@@ -5,10 +5,12 @@ import com.microsoft.playwright.Browser;
 import com.microsoft.playwright.BrowserType;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Playwright;
+import lombok.extern.log4j.Log4j2;
 
 import java.nio.file.Paths;
 import java.util.Arrays;
 
+@Log4j2
 public class BrowserManager {
     private static String webBrowserType = "Chrome";
     private static BrowserManager instance;
@@ -28,14 +30,16 @@ public class BrowserManager {
         switch (webBrowserType.toUpperCase()){
             case "CHROME":
                 browser = environment.chromium().launch(new BrowserType.LaunchOptions()
-                        .setHeadless(false)
+                        .setHeadless(true)
 //                        .setArgs(Arrays.asList("--no-sandbox", "--disable-extensions", "--disable-gpu"))
                 );
                 page = browser.newPage();
+                log.info("CHROME browser loaded");
                 break;
             case "FIREFOX":
                 browser = environment.firefox().launch(new BrowserType.LaunchOptions().setHeadless(false));
                 page = browser.newPage();
+                log.info("FIREFOX browser loaded");
                 break;
             case "EDGE":
 
@@ -46,6 +50,7 @@ public class BrowserManager {
                 );
 
                 page = browser.newPage();
+//                log.info("EDGE browser loaded");
                 break;
             default:
                 System.out.println("The WebDriver type " + webBrowserType + " is not defined");
@@ -58,6 +63,11 @@ public class BrowserManager {
             instance = new BrowserManager();
         }
         return  instance;
+    }
+
+    public static Playwright getEnvironment() {
+        BrowserManager.getInstance();
+        return BrowserManager.environment;
     }
 
     public static Page getPage() {
@@ -79,6 +89,7 @@ public class BrowserManager {
         if (environment != null) {environment.close();}
         instance = null;
         page = null;
+        log.info("Browser instance teared down.");
     }
 
 }

@@ -5,7 +5,7 @@ import com.microsoft.playwright.Page;
 import com.microsoft.playwright.TimeoutError;
 import com.microsoft.playwright.options.AriaRole;
 import com.microsoft.playwright.options.WaitForSelectorState;
-import com.serenitydojo.playwright.resources.Constants;
+import com.serenitydojo.playwright.utils.enums.Constants;
 
 public class WebElementActions {
 

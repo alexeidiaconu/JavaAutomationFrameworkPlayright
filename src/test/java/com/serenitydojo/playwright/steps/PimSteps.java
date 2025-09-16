@@ -4,8 +4,7 @@ import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.assertions.PlaywrightAssertions;
 import com.microsoft.playwright.options.AriaRole;
-import com.microsoft.playwright.options.WaitForSelectorState;
-import com.serenitydojo.playwright.resources.Constants;
+import com.serenitydojo.playwright.utils.enums.Constants;
 import com.serenitydojo.playwright.ui.blocks.SideMenu;
 import com.serenitydojo.playwright.ui.pages.AddEmployeePage;
 import com.serenitydojo.playwright.ui.pages.PimPage;
@@ -16,9 +15,9 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.junit.jupiter.api.Assertions;
 
-import static com.serenitydojo.playwright.resources.ApiUrls.DELETE_EMPLOYEE;
-import static com.serenitydojo.playwright.resources.Constants.WAIT_TIMEOUT;
-import static com.serenitydojo.playwright.utils.ContextKeys.SIDE_MENU;
+import static com.serenitydojo.playwright.utils.enums.ApiUrls.DELETE_EMPLOYEE;
+import static com.serenitydojo.playwright.utils.enums.Constants.WAIT_TIMEOUT;
+import static com.serenitydojo.playwright.utils.enums.ContextKeys.SIDE_MENU;
 
 public class PimSteps {
     ScenarioContext scenarioContext = ScenarioContext.getInstance();
