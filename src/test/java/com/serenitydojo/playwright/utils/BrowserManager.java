@@ -5,6 +5,7 @@ import com.microsoft.playwright.Browser;
 import com.microsoft.playwright.BrowserType;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Playwright;
+import groovyjarjarantlr4.v4.runtime.misc.NotNull;
 import lombok.extern.log4j.Log4j2;
 
 import java.nio.file.Paths;
@@ -34,12 +35,12 @@ public class BrowserManager {
 //                        .setArgs(Arrays.asList("--no-sandbox", "--disable-extensions", "--disable-gpu"))
                 );
                 page = browser.newPage();
-                log.info("CHROME browser loaded");
+                log.debug("CHROME browser loaded");
                 break;
             case "FIREFOX":
                 browser = environment.firefox().launch(new BrowserType.LaunchOptions().setHeadless(false));
                 page = browser.newPage();
-                log.info("FIREFOX browser loaded");
+                log.debug("FIREFOX browser loaded");
                 break;
             case "EDGE":
 
@@ -50,10 +51,10 @@ public class BrowserManager {
                 );
 
                 page = browser.newPage();
-//                log.info("EDGE browser loaded");
+               log.debug("EDGE browser loaded");
                 break;
             default:
-                System.out.println("The WebDriver type " + webBrowserType + " is not defined");
+                log.error(("The WebDriver type <%s> is not defined").formatted(webBrowserType));
         }
 
     }
@@ -62,7 +63,14 @@ public class BrowserManager {
         if (instance == null) {
             instance = new BrowserManager();
         }
-        return  instance;
+
+        if (instance != null) {
+            log.debug(("Returning Browser Instance: %s").formatted(instance.toString()));
+            return instance;
+        } else {
+            log.error("Cannot get the Browser Instance");
+            throw new RuntimeException("Cannot get the Browser Instance");
+        }
     }
 
     public static Playwright getEnvironment() {
@@ -71,7 +79,9 @@ public class BrowserManager {
     }
 
     public static Page getPage() {
-        BrowserManager browserManager = BrowserManager.getInstance();
+        BrowserManager.getInstance();
+
+        log.debug(("Current page returned successfully: %s").formatted(BrowserManager.page.toString()));
         return BrowserManager.page;
     }
 
@@ -79,17 +89,18 @@ public class BrowserManager {
         return browser;
     }
 
-    public static void setPage(Page page) {
+    public static void setPage(@NotNull Page page) {
         BrowserManager.page = page;
+        log.debug(("Current page set successfully: %s").formatted(BrowserManager.page.url()));
     }
 
     public static void tearDown() {
-        BrowserManager browserManager = BrowserManager.getInstance();
+        BrowserManager.getInstance();
         if (browser != null) {browser.close();}
         if (environment != null) {environment.close();}
         instance = null;
         page = null;
-        log.info("Browser instance teared down.");
+        log.debug(("Browser instance <%s> teared down.").formatted(BrowserManager.webBrowserType));
     }
 
 }

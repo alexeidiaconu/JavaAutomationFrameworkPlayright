@@ -39,8 +39,8 @@ public class SideMenuSteps {
 
         Locator   textToFindOnThePage = WebElementActions.locateHeadingByText(sideMenu.getCurrentPage(), pageTitle);
 
-        assert textToFindOnThePage != null;
-        if (textToFindOnThePage.isVisible()) {
+//        assert textToFindOnThePage != null;
+        if (textToFindOnThePage != null) {
             PlaywrightAssertions.assertThat(textToFindOnThePage).isVisible();
         } else {
             textToFindOnThePage = WebElementActions.locateByText(sideMenu.getCurrentPage(), pageTitle);

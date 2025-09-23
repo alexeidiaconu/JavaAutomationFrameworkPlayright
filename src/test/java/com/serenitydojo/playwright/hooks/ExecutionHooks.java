@@ -9,14 +9,18 @@ import com.serenitydojo.playwright.utils.ScenarioContext;
 import com.serenitydojo.playwright.utils.enums.ApiUrls;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
+import lombok.extern.log4j.Log4j2;
 
 import static com.serenitydojo.playwright.utils.ApiUtils.getAccessAndRefreshTokens;
 import static com.serenitydojo.playwright.utils.enums.ContextKeys.*;
 
+@Log4j2
 public class ExecutionHooks {
 
     @Before
     public static void before() {
+
+        log.info("Executing Before clause.....");
         ScenarioContext scenarioContext = ScenarioContext.getInstance();
         scenarioContext.setScenarioContext(ADMIN_USER,new AdminUser());
         scenarioContext.setScenarioContext(LOGIN_PAGE, new LoginPage());
