@@ -11,24 +11,46 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 @Log4j2
 public class ConfigReaderManager {
-    private static final String CONFIG_FILE_PATH = "src/test/resources/properties/credentials.properties";
+    private static final String CONFIG_FILE_PATH = "src/test/resources/properties/configurations.properties";
+    private static final String CREDENTIALS_FILE_PATH = "src/test/resources/properties/credentials.properties";
     private static Properties properties;
 
     public static void initPropreties() {
 
-        try (FileInputStream propertiesFile = new FileInputStream(CONFIG_FILE_PATH)) {
-            properties = new Properties();
+        try {
+
+            if (properties == null) {
+                properties = new Properties();
+            }
+
+            loadProperties(CONFIG_FILE_PATH);
+
+            loadProperties(CREDENTIALS_FILE_PATH);
+
+            log.debug("Properties Initialisation  loaded successfully! ");
+
+
+        } catch (Exception e) {
+            log.error("An exception occurred during loading the property file:" + e.getMessage());
+           e.printStackTrace();
+        }
+    }
+
+    // Generic loader that merges properties
+    private static void loadProperties(String filePath) {
+        try (FileInputStream propertiesFile = new FileInputStream(filePath)) {
 
             if (propertiesFile == null) {
-               log.error("Sorry, unable to find " + CONFIG_FILE_PATH);
+                log.error("Sorry, unable to find " + filePath);
                 return;
             }
             properties.load(propertiesFile);
 
-            log.debug("Property file loaded successfully: " + CONFIG_FILE_PATH.substring(CONFIG_FILE_PATH.lastIndexOf("/") + 1));
+
+            log.debug("Property file loaded successfully: " + filePath.substring(filePath.lastIndexOf("/") + 1));
         } catch (IOException e) {
             log.error("An exception occurred during loading the property file:" + e.getMessage());
-           e.printStackTrace();
+            e.printStackTrace();
         }
     }
 

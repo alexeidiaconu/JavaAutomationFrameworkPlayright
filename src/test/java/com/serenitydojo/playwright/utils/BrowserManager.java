@@ -13,7 +13,7 @@ import java.util.Arrays;
 
 @Log4j2
 public class BrowserManager {
-    private static String webBrowserType = "Chrome";
+    private static String webBrowserType;
     private static BrowserManager instance;
     private static Playwright environment;
     private static Browser browser;
@@ -25,39 +25,48 @@ public class BrowserManager {
 //            );
 //}
 
-    public BrowserManager() {
+    private BrowserManager() {
+
         environment = Playwright.create();
+        webBrowserType = ConfigReaderManager.getProperty("browser_type");
 
-        switch (webBrowserType.toUpperCase()){
-            case "CHROME":
-                browser = environment.chromium().launch(new BrowserType.LaunchOptions()
+        browser = this.getBrowserType().launch(new BrowserType.LaunchOptions()
                         .setHeadless(true)
-//                        .setArgs(Arrays.asList("--no-sandbox", "--disable-extensions", "--disable-gpu"))
+////                        .setArgs(Arrays.asList("--no-sandbox", "--disable-extensions", "--disable-gpu"))
                 );
                 page = browser.newPage();
-                log.debug("CHROME browser loaded");
-                break;
-            case "FIREFOX":
-                browser = environment.firefox().launch(new BrowserType.LaunchOptions().setHeadless(false));
-                page = browser.newPage();
-                log.debug("FIREFOX browser loaded");
-                break;
-            case "EDGE":
+                log.debug((" %s browser loaded").formatted(webBrowserType.toUpperCase()));
 
-                browser = environment.chromium().launch(new BrowserType.LaunchOptions()
-                        .setHeadless(false)
-                        .setArgs(Arrays.asList("--no-sandbox","--disable-extensions","--disable-gpu"))
-                        .setExecutablePath(Paths.get("C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe"))
-                );
-
-                page = browser.newPage();
-               log.debug("EDGE browser loaded");
-                break;
-            default:
-                log.error(("The WebDriver type <%s> is not defined").formatted(webBrowserType));
-        }
-
-    }
+//        switch (webBrowserType.toUpperCase()){
+//            case "CHROME":
+//                browser = environment.chromium().launch(new BrowserType.LaunchOptions()
+//                        .setHeadless(true)
+////                        .setArgs(Arrays.asList("--no-sandbox", "--disable-extensions", "--disable-gpu"))
+//                );
+//                page = browser.newPage();
+//                log.debug("CHROME browser loaded");
+//                break;
+//            case "FIREFOX":
+//                browser = environment.firefox().launch(new BrowserType.LaunchOptions().setHeadless(false));
+//                page = browser.newPage();
+//                log.debug("FIREFOX browser loaded");
+//                break;
+//            case "EDGE":
+//
+//                browser = environment.chromium().launch(new BrowserType.LaunchOptions()
+//                        .setHeadless(false)
+//                        .setArgs(Arrays.asList("--no-sandbox","--disable-extensions","--disable-gpu"))
+//                        .setExecutablePath(Paths.get("C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe"))
+//                );
+//
+//                page = browser.newPage();
+//               log.debug("EDGE browser loaded");
+//                break;
+//            default:
+//                log.error(("The WebDriver type <%s> is not defined").formatted(webBrowserType));
+//        }
+//
+}
 
     public static BrowserManager getInstance() {
         if (instance == null) {
@@ -71,6 +80,16 @@ public class BrowserManager {
             log.error("Cannot get the Browser Instance");
             throw new RuntimeException("Cannot get the Browser Instance");
         }
+    }
+
+    private BrowserType getBrowserType() {
+        String browserType = ConfigReaderManager.getProperty("browser_type");
+
+        return switch (browserType) {
+            case "firefox" -> environment.firefox();
+            case "chrome" -> environment.chromium();
+            default -> environment.webkit();
+        };
     }
 
     public static Playwright getEnvironment() {
