@@ -42,7 +42,7 @@ public abstract class GenericPage {
         this.currentPage = currentPage;
     }
 
-    public void waitForPageToBeVisible(Constants timeoutMillis) {
+    public void waitForPageToBeVisible() {
 
        try {
            BrowserManager.getInstance();

@@ -50,7 +50,7 @@ public class TopBar extends GenericPage {
 
     public Locator locateMenuItemByText(String menuItemText) {
         Locator menuItem = this.getCurrentPage().getByRole(AriaRole.MENUITEM).getByText(menuItemText);
-        menuItem.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
+//        menuItem.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
         return menuItem;
     }
 }

@@ -32,8 +32,10 @@ public class ExecutionHooks {
 
     @After
     public void closePage () {
-        LoginPage loginPage = (LoginPage) ScenarioContext.getInstance().getScenarioContext(LOGIN_PAGE);
+        LoginPage loginPage = ScenarioContext.getInstance().getScenarioContext(LOGIN_PAGE);
         loginPage.closePage();
+        ScenarioContext.getInstance().clearScenarioContext();
+
     }
 
 

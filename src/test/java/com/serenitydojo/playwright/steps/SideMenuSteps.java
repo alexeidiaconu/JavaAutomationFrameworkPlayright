@@ -23,7 +23,7 @@ public class SideMenuSteps {
     
     @Given("the Side Menu is visible")
     public void theSideMenuIsVisible() {
-        sideMenu.waitForPageToBeVisible(WAIT_TIMEOUT);
+        sideMenu.waitForPageToBeVisible();
         PlaywrightAssertions.assertThat(sideMenu.getMenuSidepanel()).isVisible();
     }
 
@@ -35,17 +35,19 @@ public class SideMenuSteps {
     @Then("the corresponding {string} title is displayed on the new opened page")
     public void theCorrespondingIsDisplayedOnTheNewOpenedPage(String pageTitle) {
 
-        sideMenu.waitForPageToBeVisible(WAIT_TIMEOUT);
+        sideMenu.waitForPageToBeVisible();
 
         Locator   textToFindOnThePage = WebElementActions.locateHeadingByText(sideMenu.getCurrentPage(), pageTitle);
 
-//        assert textToFindOnThePage != null;
-        if (textToFindOnThePage != null) {
-            PlaywrightAssertions.assertThat(textToFindOnThePage).isVisible();
-        } else {
+        if (textToFindOnThePage == null) {
             textToFindOnThePage = WebElementActions.locateByText(sideMenu.getCurrentPage(), pageTitle);
-            PlaywrightAssertions.assertThat(textToFindOnThePage).isVisible();
         }
+        PlaywrightAssertions.assertThat(textToFindOnThePage).isVisible();
+//        assert textToFindOnThePage != null;
+//        if (! textToFindOnThePage.isVisible()) {
+//            textToFindOnThePage = WebElementActions.locateByText(sideMenu.getCurrentPage(), pageTitle);
+//
+//        }
     }
 
     @And("the corresponding {string} title is displayed on the Top Bar")

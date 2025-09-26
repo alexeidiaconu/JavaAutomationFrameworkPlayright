@@ -8,6 +8,8 @@ import com.microsoft.playwright.options.WaitForSelectorState;
 import com.serenitydojo.playwright.utils.enums.Constants;
 import lombok.extern.log4j.Log4j2;
 
+import static com.serenitydojo.playwright.utils.enums.Constants.WAIT_TIMEOUT;
+
 @Log4j2
 public class WebElementActions {
 
@@ -64,8 +66,9 @@ public class WebElementActions {
     public static void clickOnMenuItem(Locator itemToClick) {
 
         try {
+            String menuItemTextContent = itemToClick.textContent();
             itemToClick.click();
-            log.info(("Clicked on Menu Item <%s>").formatted(itemToClick.textContent()));
+            log.info(("Clicked on Menu Item <%s>").formatted(menuItemTextContent));
         } catch (Exception e) {
 
             log.error(("Failed to click on Menu Item <%s>. Reason: %s").formatted(itemToClick.getAttribute("name"), e.getMessage()));
@@ -83,13 +86,18 @@ public class WebElementActions {
                     .setName(textToLocate))
                     .first();
 
+            WebElementActions.waitForWebElementToBeVisible(titleToLocate,WAIT_TIMEOUT);
+
             if (titleToLocate.isVisible()) {
 
                 log.debug(("locateHeadingByText(Page currentPage, String textToLocate) executed successfully. Result: %s").formatted(titleToLocate.textContent()));
 
                 return titleToLocate;
             }
-            else return null;
+            else {
+                log.error(("locateHeadingByText(Page currentPage, String textToLocate) executed Unsuccessfully. Unable to locate <%s>.").formatted(textToLocate));
+                return null;
+            }
         } catch (Exception e) {
 
             log.error(("locateHeadingByText(Page currentPage, String textToLocate) executed Unsuccessfully. Unable to locate <%s>. Reason: %s").formatted(textToLocate,e.getMessage()));

@@ -54,7 +54,7 @@ public class EmployeeApiSteps {
     @Then("The response from the server should be {int}")
     public void theResponseFromTheServerShouldBe(int expectedResponse) {
 
-        Assertions.assertEquals(scenarioContext.getScenarioContext(API_RESPONSE_CODE), expectedResponse);
+        Assertions.assertEquals((Integer) scenarioContext.getScenarioContext(API_RESPONSE_CODE), expectedResponse);
         System.out.println("The response for the POST/DELETE request is: " + expectedResponse);
 
     }

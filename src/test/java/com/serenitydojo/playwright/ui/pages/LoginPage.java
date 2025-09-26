@@ -87,7 +87,7 @@ public class LoginPage extends GenericPage {
 
         this.getCurrentPage().navigate(this.LOGIN_PAGE_URL , new Page.NavigateOptions().setWaitUntil(WaitUntilState.NETWORKIDLE));
 
-        this.waitForPageToBeVisible(Constants.WAIT_TIMEOUT);
+        this.waitForPageToBeVisible();
         this.usernameField.fill(adminUser.USERNAME);
         this.passwordField.fill(adminUser.PASSWORD);
         this.loginButton.click();
