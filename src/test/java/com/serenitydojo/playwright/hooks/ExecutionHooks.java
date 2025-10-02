@@ -26,12 +26,13 @@ public class ExecutionHooks {
         scenarioContext.setScenarioContext(LOGIN_PAGE, new LoginPage());
         scenarioContext.setScenarioContext(SIDE_MENU, new SideMenu());
         scenarioContext.setScenarioContext(TOP_BAR, new TopBar());
-//       getAccessAndRefreshTokens(ConfigReaderManager.getProperty("refresh_token"), ApiUrls.GET_ACCESS_AND_REFRESH_TOKEN);
+       getAccessAndRefreshTokens(ConfigReaderManager.getProperty("refresh_token"), ApiUrls.GET_ACCESS_AND_REFRESH_TOKEN);
         scenarioContext.setScenarioContext(ACCESS_TOKEN, ConfigReaderManager.getProperty("access_token"));
     }
 
     @After
     public void closePage () {
+        log.info("Executing After clause.....");
         LoginPage loginPage = ScenarioContext.getInstance().getScenarioContext(LOGIN_PAGE);
         loginPage.closePage();
         ScenarioContext.getInstance().clearScenarioContext();

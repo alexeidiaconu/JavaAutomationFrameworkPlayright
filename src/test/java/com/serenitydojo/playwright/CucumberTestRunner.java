@@ -9,7 +9,9 @@ import org.junit.runner.RunWith;
         features =  "classpath:features", //"src/test/resources/features/",
         glue = {"com.serenitydojo.playwright.steps","com.serenitydojo.playwright.hooks"},
         tags = "@API",
-        plugin = {"pretty", "html:target/cucumber-reports"}
+        plugin = {"pretty",
+                "io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm",
+        }
 )
 
 public class CucumberTestRunner {

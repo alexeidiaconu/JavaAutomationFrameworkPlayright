@@ -45,14 +45,16 @@ public abstract class GenericPage {
     public void waitForPageToBeVisible() {
 
        try {
-           BrowserManager.getInstance();
-           this.setCurrentPage(BrowserManager.getPage());
 
-           Page currentPage = this.getCurrentPage();
-           currentPage.waitForLoadState(LoadState.NETWORKIDLE, new Page.WaitForLoadStateOptions().setTimeout(WAIT_TIMEOUT.getValue()));
-           log.info(("waitForPageToBeVisible(Constants timeoutMillis): The Page is visible: %s").formatted(currentPage.url()));
+           currentPage.waitForLoadState(LoadState.NETWORKIDLE);
+
+           BrowserManager.getInstance();
+
+           currentPage = BrowserManager.getPage();
+
+           log.info(("waitForPageToBeVisible(): The Page is visible: %s").formatted(currentPage.url()));
        } catch (TimeoutError e) {
-          log.error(("waitForPageToBeVisible(Constants timeoutMillis): The Current Page is NOT visible: . Error: %s").formatted(e.getMessage()));
+          log.error(("waitForPageToBeVisible(): The Current Page is NOT visible: . Error: %s").formatted(e.getMessage()));
        }
     }
 

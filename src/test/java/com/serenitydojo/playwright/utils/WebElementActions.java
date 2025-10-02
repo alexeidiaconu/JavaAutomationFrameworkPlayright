@@ -78,31 +78,35 @@ public class WebElementActions {
 
     public static Locator locateHeadingByText(Page currentPage, String textToLocate) {
 
-
+        Locator titleToLocate;
 
         try {
-            Locator titleToLocate = currentPage
+            titleToLocate = currentPage
                     .getByRole(AriaRole.HEADING, new Page.GetByRoleOptions()
                     .setName(textToLocate))
                     .first();
 
+
             WebElementActions.waitForWebElementToBeVisible(titleToLocate,WAIT_TIMEOUT);
+
 
             if (titleToLocate.isVisible()) {
 
                 log.debug(("locateHeadingByText(Page currentPage, String textToLocate) executed successfully. Result: %s").formatted(titleToLocate.textContent()));
-
                 return titleToLocate;
+
+
             }
             else {
                 log.error(("locateHeadingByText(Page currentPage, String textToLocate) executed Unsuccessfully. Unable to locate <%s>.").formatted(textToLocate));
-                return null;
+                return titleToLocate;
             }
         } catch (Exception e) {
 
             log.error(("locateHeadingByText(Page currentPage, String textToLocate) executed Unsuccessfully. Unable to locate <%s>. Reason: %s").formatted(textToLocate,e.getMessage()));
             throw new RuntimeException(e);
         }
+
 
     }
 
@@ -120,11 +124,11 @@ public class WebElementActions {
     public static Locator locateByText(Page currentPage, String textToLocate) {
 
         try {
-            Locator titleToLocate = currentPage.getByText(textToLocate);
+            Locator titleToLocate = currentPage.locator("h5, h6, p", new Page.LocatorOptions().setHasText(textToLocate)).first();
 
             if (titleToLocate.isVisible()) {
 
-                log.debug(("locateByText(Page currentPage, String textToLocate) executed successfully. Result: ").formatted(titleToLocate.toString()));
+                log.debug(("locateByText(Page currentPage, String textToLocate) executed successfully. Result: ").formatted(titleToLocate.textContent()));
                 return titleToLocate;
             } else {
                 log.error(("Unable to locate text <%s>").formatted(textToLocate));

@@ -31,7 +31,7 @@ public class BrowserManager {
         webBrowserType = ConfigReaderManager.getProperty("browser_type");
 
         browser = this.getBrowserType().launch(new BrowserType.LaunchOptions()
-                        .setHeadless(false)
+                        .setHeadless(true)
 ////                        .setArgs(Arrays.asList("--no-sandbox", "--disable-extensions", "--disable-gpu"))
                 );
                 page = browser.newPage();

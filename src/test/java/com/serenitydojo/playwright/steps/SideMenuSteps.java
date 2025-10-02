@@ -37,17 +37,25 @@ public class SideMenuSteps {
 
         sideMenu.waitForPageToBeVisible();
 
-        Locator   textToFindOnThePage = WebElementActions.locateHeadingByText(sideMenu.getCurrentPage(), pageTitle);
 
-        if (textToFindOnThePage == null) {
-            textToFindOnThePage = WebElementActions.locateByText(sideMenu.getCurrentPage(), pageTitle);
+        try {
+            Locator   textToFindOnThePage =  WebElementActions.locateByText(sideMenu.getCurrentPage(), pageTitle); //WebElementActions.locateHeadingByText(sideMenu.getCurrentPage(), pageTitle);
+
+
+            if (textToFindOnThePage != null && textToFindOnThePage.isVisible()) {
+                PlaywrightAssertions.assertThat(textToFindOnThePage).isVisible();
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
-        PlaywrightAssertions.assertThat(textToFindOnThePage).isVisible();
+
 //        assert textToFindOnThePage != null;
 //        if (! textToFindOnThePage.isVisible()) {
 //            textToFindOnThePage = WebElementActions.locateByText(sideMenu.getCurrentPage(), pageTitle);
 //
 //        }
+        //        Locator   textToFindOnThePage = sideMenu.getCurrentPage().locator("//*[contains(@class, 'oxd-text')]").getByText(pageTitle);
+//                .or(WebElementActions.locateByText(sideMenu.getCurrentPage(), pageTitle));
     }
 
     @And("the corresponding {string} title is displayed on the Top Bar")

@@ -93,7 +93,7 @@ public class LoginPage extends GenericPage {
         this.loginButton.click();
 
         log.info(("login(AdminUser adminUser): Admin User <%s> logged in successfully").formatted(adminUser.USERNAME));
-        this.getCurrentPage();
+//        this.getCurrentPage();
     }
 
 }
