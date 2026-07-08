@@ -28,6 +28,7 @@
         <com.fasterxml.jackson.core.version>2.15.2</com.fasterxml.jackson.core.version>
         <aspectj.version>1.9.24</aspectj.version>
         <allure.version>2.30.0</allure.version>
+        <org.projectlombok.version>1.18.42</org.projectlombok.version>
 
 
     </properties>

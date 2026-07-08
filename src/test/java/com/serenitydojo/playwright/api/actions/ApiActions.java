@@ -78,7 +78,7 @@ public class ApiActions {
                 .when()
                 //HTTP Request Method.
                 .get(endPointURL);
-
+        getAPIResponse.then().log().all();
                 // Ensuring that status code is 200 OK.
     if (getAPIResponse.statusCode() == 200) {
         setScenarioContextWithRequestResponse(getAPIResponse);

@@ -8,7 +8,7 @@ import org.junit.runner.RunWith;
 @CucumberOptions(
         features =  "classpath:features", //"src/test/resources/features/",
         glue = {"com.serenitydojo.playwright.steps","com.serenitydojo.playwright.hooks"},
-        tags = "@API",
+        tags = "@Smoke",
         plugin = {"pretty",
                 "io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm",
         }
