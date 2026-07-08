@@ -4,6 +4,10 @@ import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.assertions.PlaywrightAssertions;
 import com.microsoft.playwright.options.AriaRole;
+import com.microsoft.playwright.options.LoadState;
+import com.microsoft.playwright.options.WaitForSelectorState;
+import com.microsoft.playwright.options.WaitUntilState;
+import com.serenitydojo.playwright.utils.BrowserManager;
 import com.serenitydojo.playwright.utils.enums.Constants;
 import com.serenitydojo.playwright.ui.blocks.SideMenu;
 import com.serenitydojo.playwright.ui.pages.AddEmployeePage;
@@ -21,7 +25,7 @@ import static com.serenitydojo.playwright.utils.enums.ContextKeys.SIDE_MENU;
 
 public class PimSteps {
     ScenarioContext scenarioContext = ScenarioContext.getInstance();
-    SideMenu sideMenu = (SideMenu) scenarioContext.getScenarioContext(SIDE_MENU);
+    SideMenu sideMenu = scenarioContext.getScenarioContext(SIDE_MENU);
     PimPage pimPage = new PimPage();
     AddEmployeePage addEmployeePage = new AddEmployeePage();
 
@@ -32,7 +36,7 @@ public class PimSteps {
 
     @And("The side menu is visible")
     public void theSideMenuIsVisible() {
-        sideMenu.waitForPageToBeVisible(WAIT_TIMEOUT);
+        sideMenu.waitForPageToBeVisible();
         PlaywrightAssertions.assertThat(sideMenu.getCurrentPage().getByRole(AriaRole.NAVIGATION, new Page.GetByRoleOptions().setName("Sidepanel") )).isVisible(); //???
     }
 
@@ -78,11 +82,18 @@ public class PimSteps {
     @Then("user is redirected to Personal Details page")
     public void userIsRedirectedToPersonalDetailsPage() {
 
-        Locator personalDetailsTitle = WebElementActions.locateHeadingByText(pimPage.getCurrentPage(),"Personal Details");
+        BrowserManager.getPage().waitForURL("**/viewPersonalDetails/empNumber/**",
+                new Page.WaitForURLOptions()
+                        .setWaitUntil(WaitUntilState.NETWORKIDLE)
+        );
 
-        if (personalDetailsTitle != null) {
-            WebElementActions.waitForWebElementToBeVisible(personalDetailsTitle,WAIT_TIMEOUT);
-        }
+//        WebElementActions.locateHeadingByText(pimPage.getCurrentPage(),"Personal Details")
+//                        .waitFor(new Locator.WaitForOptions()
+//                        .setState(WaitForSelectorState.VISIBLE));
+
+        Locator personalDetailsTitle = WebElementActions.locateHeadingByText(pimPage.getCurrentPage(),"Personal Details");
+        WebElementActions.waitForWebElementToBeVisible(personalDetailsTitle,WAIT_TIMEOUT);
+
 
         PlaywrightAssertions.assertThat(personalDetailsTitle).isVisible();
     }

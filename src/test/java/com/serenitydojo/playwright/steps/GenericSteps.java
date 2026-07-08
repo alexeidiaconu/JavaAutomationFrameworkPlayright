@@ -33,7 +33,7 @@ public class GenericSteps {
 
     @And("the {} page is displayed")
     public void thePageIsDisplayed(String pageTitle) {
-        topBar.waitForPageToBeVisible(WAIT_TIMEOUT);
+        topBar.waitForPageToBeVisible();
         Assertions.assertThat(topBar.getTopbarTitleText().contains(pageTitle)).isTrue();
 
     }

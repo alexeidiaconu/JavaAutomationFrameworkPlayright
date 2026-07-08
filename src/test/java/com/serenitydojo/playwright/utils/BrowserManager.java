@@ -5,6 +5,7 @@ import com.microsoft.playwright.Browser;
 import com.microsoft.playwright.BrowserType;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Playwright;
+import groovyjarjarantlr4.v4.runtime.misc.NotNull;
 import lombok.extern.log4j.Log4j2;
 
 import java.nio.file.Paths;
@@ -12,7 +13,7 @@ import java.util.Arrays;
 
 @Log4j2
 public class BrowserManager {
-    private static String webBrowserType = "Chrome";
+    private static String webBrowserType;
     private static BrowserManager instance;
     private static Playwright environment;
     private static Browser browser;
@@ -24,45 +25,71 @@ public class BrowserManager {
 //            );
 //}
 
-    public BrowserManager() {
+    private BrowserManager() {
+
         environment = Playwright.create();
+        webBrowserType = ConfigReaderManager.getProperty("browser_type");
 
-        switch (webBrowserType.toUpperCase()){
-            case "CHROME":
-                browser = environment.chromium().launch(new BrowserType.LaunchOptions()
-                        .setHeadless(true)
-//                        .setArgs(Arrays.asList("--no-sandbox", "--disable-extensions", "--disable-gpu"))
-                );
-                page = browser.newPage();
-                log.info("CHROME browser loaded");
-                break;
-            case "FIREFOX":
-                browser = environment.firefox().launch(new BrowserType.LaunchOptions().setHeadless(false));
-                page = browser.newPage();
-                log.info("FIREFOX browser loaded");
-                break;
-            case "EDGE":
-
-                browser = environment.chromium().launch(new BrowserType.LaunchOptions()
+        browser = this.getBrowserType().launch(new BrowserType.LaunchOptions()
                         .setHeadless(false)
-                        .setArgs(Arrays.asList("--no-sandbox","--disable-extensions","--disable-gpu"))
-                        .setExecutablePath(Paths.get("C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe"))
+////                        .setArgs(Arrays.asList("--no-sandbox", "--disable-extensions", "--disable-gpu"))
                 );
-
                 page = browser.newPage();
-//                log.info("EDGE browser loaded");
-                break;
-            default:
-                System.out.println("The WebDriver type " + webBrowserType + " is not defined");
-        }
+                log.debug((" %s browser loaded").formatted(webBrowserType.toUpperCase()));
 
-    }
+//        switch (webBrowserType.toUpperCase()){
+//            case "CHROME":
+//                browser = environment.chromium().launch(new BrowserType.LaunchOptions()
+//                        .setHeadless(true)
+////                        .setArgs(Arrays.asList("--no-sandbox", "--disable-extensions", "--disable-gpu"))
+//                );
+//                page = browser.newPage();
+//                log.debug("CHROME browser loaded");
+//                break;
+//            case "FIREFOX":
+//                browser = environment.firefox().launch(new BrowserType.LaunchOptions().setHeadless(false));
+//                page = browser.newPage();
+//                log.debug("FIREFOX browser loaded");
+//                break;
+//            case "EDGE":
+//
+//                browser = environment.chromium().launch(new BrowserType.LaunchOptions()
+//                        .setHeadless(false)
+//                        .setArgs(Arrays.asList("--no-sandbox","--disable-extensions","--disable-gpu"))
+//                        .setExecutablePath(Paths.get("C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe"))
+//                );
+//
+//                page = browser.newPage();
+//               log.debug("EDGE browser loaded");
+//                break;
+//            default:
+//                log.error(("The WebDriver type <%s> is not defined").formatted(webBrowserType));
+//        }
+//
+}
 
     public static BrowserManager getInstance() {
         if (instance == null) {
             instance = new BrowserManager();
         }
-        return  instance;
+
+        if (instance != null) {
+            log.debug(("Returning Browser Instance: %s").formatted(instance.toString()));
+            return instance;
+        } else {
+            log.error("Cannot get the Browser Instance");
+            throw new RuntimeException("Cannot get the Browser Instance");
+        }
+    }
+
+    private BrowserType getBrowserType() {
+        String browserType = ConfigReaderManager.getProperty("browser_type");
+
+        return switch (browserType) {
+            case "firefox" -> environment.firefox();
+            case "chrome" -> environment.chromium();
+            default -> environment.webkit();
+        };
     }
 
     public static Playwright getEnvironment() {
@@ -71,7 +98,9 @@ public class BrowserManager {
     }
 
     public static Page getPage() {
-        BrowserManager browserManager = BrowserManager.getInstance();
+        BrowserManager.getInstance();
+
+        log.debug(("Current page returned successfully: %s").formatted(BrowserManager.page.toString()));
         return BrowserManager.page;
     }
 
@@ -79,17 +108,18 @@ public class BrowserManager {
         return browser;
     }
 
-    public static void setPage(Page page) {
+    public static void setPage(@NotNull Page page) {
         BrowserManager.page = page;
+        log.debug(("Current page set successfully: %s").formatted(BrowserManager.page.url()));
     }
 
     public static void tearDown() {
-        BrowserManager browserManager = BrowserManager.getInstance();
+        BrowserManager.getInstance();
         if (browser != null) {browser.close();}
         if (environment != null) {environment.close();}
         instance = null;
         page = null;
-        log.info("Browser instance teared down.");
+        log.debug(("Browser instance <%s> teared down.").formatted(BrowserManager.webBrowserType));
     }
 
 }

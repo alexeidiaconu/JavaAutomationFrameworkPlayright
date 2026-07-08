@@ -4,7 +4,9 @@ import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
 import com.serenitydojo.playwright.ui.pages.GenericPage;
+import lombok.extern.log4j.Log4j2;
 
+@Log4j2
 public class SideMenu extends GenericPage {
 
     private final Locator menuItemAdmin;
@@ -22,19 +24,24 @@ public class SideMenu extends GenericPage {
     private final Locator menuSidepanel;
 
     public SideMenu() {
-        this.menuItemAdmin = super.getCurrentPage().locator("//span[normalize-space()='Admin']");
-        this.menuItemPIM = super.getCurrentPage().locator("//span[normalize-space()='PIM']");
-        this.menuItemLeave = super.getCurrentPage().getByRole(AriaRole.LINK, new Page.GetByRoleOptions().setName("Leave"));
-        this.menuItemTime = super.getCurrentPage().locator("//span[normalize-space()='Time']");
-        this.menuItemRecruitment = super.getCurrentPage().locator("//span[normalize-space()='Recruitment']");
-        this.menuItemMyInfo = super.getCurrentPage().locator("//span[normalize-space()='My Info']");
-        this.menuItemPerformance = super.getCurrentPage().locator("//span[normalize-space()='Performance']");
-        this.menuItemDashboard = super.getCurrentPage().getByRole(AriaRole.LINK, new Page.GetByRoleOptions().setName("Dashboard"));
-        this.menuItemDirectory = super.getCurrentPage().locator("//span[normalize-space()='Directory']");
-        this.menuItemMaintenance = super.getCurrentPage().locator("//span[normalize-space()='Maintenance']");
-        this.menuItemClaim = super.getCurrentPage().locator("//span[normalize-space()='Claim']");
-        this.menuItemBuzz = super.getCurrentPage().locator("//span[normalize-space()='Buzz']");
-        this.menuSidepanel = super.getCurrentPage().getByRole(AriaRole.NAVIGATION, new Page.GetByRoleOptions().setName("Sidepanel"));
+
+        super();
+
+        Page superPage = super.getCurrentPage();
+
+        this.menuItemAdmin = superPage.locator("//span[normalize-space()='Admin']");
+        this.menuItemPIM = superPage.locator("//span[normalize-space()='PIM']");
+        this.menuItemLeave = superPage.getByRole(AriaRole.LINK, new Page.GetByRoleOptions().setName("Leave"));
+        this.menuItemTime = superPage.locator("//span[normalize-space()='Time']");
+        this.menuItemRecruitment = superPage.locator("//span[normalize-space()='Recruitment']");
+        this.menuItemMyInfo = superPage.locator("//span[normalize-space()='My Info']");
+        this.menuItemPerformance = superPage.locator("//span[normalize-space()='Performance']");
+        this.menuItemDashboard = superPage.getByRole(AriaRole.LINK, new Page.GetByRoleOptions().setName("Dashboard"));
+        this.menuItemDirectory = superPage.locator("//span[normalize-space()='Directory']");
+        this.menuItemMaintenance = superPage.locator("//span[normalize-space()='Maintenance']");
+        this.menuItemClaim = superPage.locator("//span[normalize-space()='Claim']");
+        this.menuItemBuzz = superPage.locator("//span[normalize-space()='Buzz']");
+        this.menuSidepanel = superPage.getByRole(AriaRole.NAVIGATION, new Page.GetByRoleOptions().setName("Sidepanel"));
     }
 
     public Locator getMenuItemAdmin() {
@@ -89,41 +96,57 @@ public class SideMenu extends GenericPage {
         return menuSidepanel;
     }
 
+//    Actions
+
     public void clickOnSideMenuItem(String menuItemText) {
         switch (menuItemText.trim()) {
             case "Admin":
                 getMenuItemAdmin().click();
+                log.info(("Menu Item <%s> was clicked").formatted(menuItemText.trim()));
                 break;
             case "PIM":
                 getMenuItemPIM().click();
+                log.info(("Menu Item <%s> was clicked").formatted(menuItemText.trim()));
                 break;
             case "Leave":
                 getMenuItemLeave().click();
+                log.info(("Menu Item <%s> was clicked").formatted(menuItemText.trim()));
                 break;
             case "Time":
                 getMenuItemTime().click();
+                log.info(("Menu Item <%s> was clicked").formatted(menuItemText.trim()));
                 break;
             case "Recruitment":
                 getMenuItemRecruitment().click();
+                log.info(("Menu Item <%s> was clicked").formatted(menuItemText.trim()));
                 break;
             case "My Info":
                 getMenuItemMyInfo().click();
+                log.info(("Menu Item <%s> was clicked").formatted(menuItemText.trim()));
                 break;
             case "Performance":
                 getMenuItemPerformance().click();
+                log.info(("Menu Item <%s> was clicked").formatted(menuItemText.trim()));
                 break;
             case "Dashboard":
                 getMenuItemDashboard().click();
+                log.info(("Menu Item <%s> was clicked").formatted(menuItemText.trim()));
                 break;
             case "Directory":
                 getMenuItemDirectory().click();
+                log.info(("Menu Item <%s> was clicked").formatted(menuItemText.trim()));
                 break;
             case "Claim":
                 getMenuItemClaim().click();
+                log.info(("Menu Item <%s> was clicked").formatted(menuItemText.trim()));
                 break;
             case "Buzz":
                 getMenuItemBuzz().click();
+                log.info(("Menu Item <%s> was clicked").formatted(menuItemText.trim()));
                 break;
+            default:
+                log.error(("No Menu Item with the name <%s> was found").formatted(menuItemText.trim()));
+
         }
     }
 }

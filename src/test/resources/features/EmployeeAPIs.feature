@@ -16,7 +16,7 @@ Feature: Employee APIs Flows
     Examples:
       | employee_number | first_name | last_name | employee_id |
       | 6               | Alexei     | Diaconu   | 0006        |
-      | 177             | Byron      | Sporer    | 258361495   |
+      | 1               | admin      | Single    | 0001        |
       | 25              | Harry      | Walker    | 0024        |
 
   @API
@@ -33,7 +33,7 @@ Feature: Employee APIs Flows
     And The created Employee should exist in the system
     Examples:
       | first_name | last_name | employee_id |
-      | Elton      | John      | 69          |
+      | Elton      | John      | 692         |
 
   @API
   Scenario Outline: Delete an Employee by Employee Number
@@ -43,4 +43,4 @@ Feature: Employee APIs Flows
     And The deleted Employee with Employee Number <employee_number> should NOT exist in the system
     Examples:
       | employee_number |
-      | 119             |
+      | 5582             |
